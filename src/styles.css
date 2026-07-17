@@ -33,31 +33,19 @@ body {
   overflow-x: clip;
 }
 
-.reward-wave-background {
+.reward-starfield {
   position: fixed;
   inset: 0;
   z-index: 0;
   width: 100%;
   height: 100%;
   pointer-events: none;
-  overflow: hidden;
+  opacity: 1;
+  transition: opacity 320ms ease;
 }
 
-.reward-wave-poster,
-.reward-wave-video {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.reward-wave-poster {
-  z-index: 0;
-}
-
-.reward-wave-video {
-  z-index: 1;
+html[data-theme="light"] .reward-starfield {
+  opacity: 0.9;
 }
 
 @property --sparkle-angle {
@@ -229,8 +217,8 @@ html[data-theme="light"] .sparkle-frame {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .reward-wave-video {
-    display: none;
+  .reward-starfield {
+    opacity: 0.58;
   }
 
   .sparkle-frame::after {
