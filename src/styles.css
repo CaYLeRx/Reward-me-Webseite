@@ -33,7 +33,7 @@ body {
   overflow-x: clip;
 }
 
-.reward-starfield {
+.reward-wavefield {
   position: fixed;
   inset: 0;
   z-index: 0;
@@ -44,7 +44,7 @@ body {
   transition: opacity 320ms ease;
 }
 
-html[data-theme="light"] .reward-starfield {
+html[data-theme="light"] .reward-wavefield {
   opacity: 0.9;
 }
 
@@ -217,7 +217,7 @@ html[data-theme="light"] .sparkle-frame {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .reward-starfield {
+  .reward-wavefield {
     opacity: 0.58;
   }
 
