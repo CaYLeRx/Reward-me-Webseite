@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { pageMeta, routes, templates } from "./templates.js";
-import { Wavefield } from "./Wavefield.jsx";
+import { VideoBackground } from "./VideoBackground.jsx";
 
 const localeByTitle = {
   Deutsch: "de",
@@ -295,7 +295,7 @@ export function App() {
 
   return (
     <>
-      <Wavefield />
+      <VideoBackground />
       <div
         ref={rootRef}
         dangerouslySetInnerHTML={{ __html: templates[routeKey][locale] }}
