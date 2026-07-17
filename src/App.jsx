@@ -78,6 +78,35 @@ function setThemeButtonState(button, theme, labels) {
   button.title = label;
 }
 
+function decorateSparkleFrames(root) {
+  const decorated = [];
+  const candidates = root.querySelectorAll(".surface, main [class*='rounded-']");
+
+  candidates.forEach((element, index) => {
+    const classes = [...element.classList];
+    const isSurface = element.classList.contains("surface");
+    const isRounded = classes.some((className) => className.includes("rounded-"));
+    const isBordered = classes.some(
+      (className) => className === "border" || className.startsWith("border-"),
+    );
+    const isStructuralBox = ["DIV", "FORM", "ARTICLE", "LI"].includes(element.tagName);
+
+    if ((!isSurface && !(isRounded && isBordered)) || !isStructuralBox) return;
+    if (element.closest("header") || element.getAttribute("role") === "group") return;
+
+    element.classList.add("sparkle-frame");
+    element.style.setProperty("--sparkle-delay", `${-(index % 9) * 0.41}s`);
+    decorated.push(element);
+  });
+
+  return () => {
+    decorated.forEach((element) => {
+      element.classList.remove("sparkle-frame");
+      element.style.removeProperty("--sparkle-delay");
+    });
+  };
+}
+
 export function App() {
   const routeKey = useMemo(getRouteKey, []);
   const [locale, setLocale] = useState(getInitialLocale);
@@ -99,6 +128,7 @@ export function App() {
     document.documentElement.dataset.theme = theme;
 
     const cleanup = [];
+    cleanup.push(decorateSparkleFrames(root));
     const revealObserver = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
