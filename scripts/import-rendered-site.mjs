@@ -24,14 +24,10 @@ const locales = ["de", "en", "fr", "it"];
 
 function sanitize(markup) {
   return markup
-    .replace(/^<div hidden="">(?:<!--\$--><!--\/\$-->)?<\/div>/, "")
-    .replace(
-      /^<div aria-hidden="true" class="pointer-events-none fixed inset-0 z-0"><svg[\s\S]*?<\/svg><\/div>/,
-      "",
-    )
     .replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, "")
     .replace(/<next-route-announcer\b[^>]*>[\s\S]*?<\/next-route-announcer>/gi, "")
     .replace(/<nextjs-portal\b[^>]*>[\s\S]*?<\/nextjs-portal>/gi, "")
+    .replace(/^<div hidden=""><!--\$--><!--\/\$--><\/div>/, "")
     .replace(/\s+srcset="[^"]*"/gi, "")
     .replace(/\s+sizes="[^"]*"/gi, "")
     .replace(/\s+data-nimg="[^"]*"/gi, "")

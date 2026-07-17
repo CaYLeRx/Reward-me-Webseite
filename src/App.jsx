@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { pageMeta, routes, templates } from "./templates.js";
-import { Starfield } from "./Starfield.jsx";
 
 const localeByTitle = {
   Deutsch: "de",
@@ -78,50 +77,6 @@ function setThemeButtonState(button, theme, labels) {
   button.title = label;
 }
 
-function decorateSparkleFrames(root) {
-  const decorated = [];
-  const candidates = root.querySelectorAll(".surface, main [class*='rounded-']");
-
-  candidates.forEach((element, index) => {
-    const classes = [...element.classList];
-    const isSurface = element.classList.contains("surface");
-    const isRounded = classes.some((className) => className.includes("rounded-"));
-    const isBordered = classes.some(
-      (className) => className === "border" || className.startsWith("border-"),
-    );
-    const isStructuralBox = ["DIV", "FORM", "ARTICLE", "LI"].includes(element.tagName);
-
-    if ((!isSurface && !(isRounded && isBordered)) || !isStructuralBox) return;
-    if (element.closest("header") || element.getAttribute("role") === "group") return;
-
-    element.classList.add("sparkle-frame");
-    element.style.setProperty("--sparkle-delay", `${-(index % 9) * 0.41}s`);
-    const sparks = Array.from({ length: 4 }, (_, sparkIndex) => {
-      const spark = document.createElement("span");
-      spark.className = "edge-spark";
-      spark.setAttribute("aria-hidden", "true");
-      spark.style.setProperty("--spark-index", sparkIndex);
-      spark.style.setProperty("--spark-start", `${sparkIndex * 25}%`);
-      spark.style.setProperty("--spark-speed", `${4.2 + (index % 5) * 0.38}s`);
-      spark.style.setProperty(
-        "--spark-offset",
-        `${-(sparkIndex * 1.07 + (index % 7) * 0.19)}s`,
-      );
-      element.append(spark);
-      return spark;
-    });
-    decorated.push({ element, sparks });
-  });
-
-  return () => {
-    decorated.forEach(({ element, sparks }) => {
-      sparks.forEach((spark) => spark.remove());
-      element.classList.remove("sparkle-frame");
-      element.style.removeProperty("--sparkle-delay");
-    });
-  };
-}
-
 export function App() {
   const routeKey = useMemo(getRouteKey, []);
   const [locale, setLocale] = useState(getInitialLocale);
@@ -133,12 +88,8 @@ export function App() {
 
     const labels = ui[locale];
     const meta = pageMeta[routeKey][locale];
-    document.documentElement.lang = meta.lang || locale;
-    document.title = meta.title || "Reward Me. Belohnungen für bewusstes Verhalten.";
-    const descriptionMeta = document.querySelector('meta[name="description"]');
-    if (descriptionMeta && meta.description) {
-      descriptionMeta.setAttribute("content", meta.description);
-    }
+    document.documentElement.lang = locale;
+    document.title = meta.title || "Reward Me — Belohnung, die sich lohnt.";
     document.body.className = "bg-night text-haze";
     window.localStorage.setItem("reward-me-locale", locale);
 
@@ -147,7 +98,6 @@ export function App() {
     document.documentElement.dataset.theme = theme;
 
     const cleanup = [];
-    cleanup.push(decorateSparkleFrames(root));
     const revealObserver = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
@@ -294,12 +244,9 @@ export function App() {
   }, [locale, routeKey]);
 
   return (
-    <>
-      <Starfield />
-      <div
-        ref={rootRef}
-        dangerouslySetInnerHTML={{ __html: templates[routeKey][locale] }}
-      />
-    </>
+    <div
+      ref={rootRef}
+      dangerouslySetInnerHTML={{ __html: templates[routeKey][locale] }}
+    />
   );
 }
