@@ -96,11 +96,26 @@ function decorateSparkleFrames(root) {
 
     element.classList.add("sparkle-frame");
     element.style.setProperty("--sparkle-delay", `${-(index % 9) * 0.41}s`);
-    decorated.push(element);
+    const sparks = Array.from({ length: 4 }, (_, sparkIndex) => {
+      const spark = document.createElement("span");
+      spark.className = "edge-spark";
+      spark.setAttribute("aria-hidden", "true");
+      spark.style.setProperty("--spark-index", sparkIndex);
+      spark.style.setProperty("--spark-start", `${sparkIndex * 25}%`);
+      spark.style.setProperty("--spark-speed", `${4.2 + (index % 5) * 0.38}s`);
+      spark.style.setProperty(
+        "--spark-offset",
+        `${-(sparkIndex * 1.07 + (index % 7) * 0.19)}s`,
+      );
+      element.append(spark);
+      return spark;
+    });
+    decorated.push({ element, sparks });
   });
 
   return () => {
-    decorated.forEach((element) => {
+    decorated.forEach(({ element, sparks }) => {
+      sparks.forEach((spark) => spark.remove());
       element.classList.remove("sparkle-frame");
       element.style.removeProperty("--sparkle-delay");
     });
@@ -118,8 +133,12 @@ export function App() {
 
     const labels = ui[locale];
     const meta = pageMeta[routeKey][locale];
-    document.documentElement.lang = locale;
-    document.title = meta.title || "Reward Me — Belohnung, die sich lohnt.";
+    document.documentElement.lang = meta.lang || locale;
+    document.title = meta.title || "Reward Me. Belohnungen für bewusstes Verhalten.";
+    const descriptionMeta = document.querySelector('meta[name="description"]');
+    if (descriptionMeta && meta.description) {
+      descriptionMeta.setAttribute("content", meta.description);
+    }
     document.body.className = "bg-night text-haze";
     window.localStorage.setItem("reward-me-locale", locale);
 

@@ -28,6 +28,11 @@
   min-height: 100vh;
 }
 
+html,
+body {
+  overflow-x: clip;
+}
+
 .reward-starfield {
   position: fixed;
   inset: 0;
@@ -56,6 +61,21 @@ html[data-theme="light"] .reward-starfield {
   --sparkle-glow: rgba(59, 227, 140, 0.5);
   position: relative;
   isolation: isolate;
+}
+
+.sparkle-frame::before {
+  position: absolute;
+  z-index: 3;
+  inset: -5px;
+  border: 1px solid transparent;
+  border-radius: inherit;
+  pointer-events: none;
+  content: "";
+  box-shadow:
+    0 0 10px transparent,
+    inset 0 0 12px transparent;
+  opacity: 0.35;
+  animation: sparkle-aura-pulse 3.1s ease-in-out infinite var(--sparkle-delay, 0s);
 }
 
 .sparkle-frame::after {
@@ -88,8 +108,32 @@ html[data-theme="light"] .reward-starfield {
   -webkit-mask-composite: xor;
   mask-composite: exclude;
   animation:
-    sparkle-border-orbit 5.2s linear infinite var(--sparkle-delay, 0s),
-    sparkle-border-pulse 2.4s ease-in-out infinite var(--sparkle-delay, 0s);
+    sparkle-border-orbit 3.6s linear infinite var(--sparkle-delay, 0s),
+    sparkle-border-pulse 1.9s ease-in-out infinite var(--sparkle-delay, 0s),
+    sparkle-border-hue 7.8s ease-in-out infinite var(--sparkle-delay, 0s);
+  will-change: opacity, filter;
+}
+
+.sparkle-frame > .edge-spark {
+  position: absolute;
+  z-index: 7;
+  top: 0;
+  left: 0;
+  width: 5px;
+  height: 5px;
+  border-radius: 999px;
+  pointer-events: none;
+  background: var(--sparkle-b);
+  box-shadow:
+    0 0 4px 1px var(--sparkle-b),
+    0 0 11px 3px var(--sparkle-a),
+    0 0 20px 5px var(--sparkle-glow);
+  offset-path: inset(1px round 18px);
+  offset-rotate: 0deg;
+  animation:
+    edge-spark-orbit var(--spark-speed, 4.8s) linear infinite var(--spark-offset, 0s),
+    edge-spark-twinkle 1.15s ease-in-out infinite var(--spark-offset, 0s);
+  will-change: offset-distance, opacity, transform;
 }
 
 html[data-theme="light"] .sparkle-frame {
@@ -116,14 +160,78 @@ html[data-theme="light"] .sparkle-frame {
   }
 }
 
+@keyframes sparkle-border-hue {
+  0%,
+  100% {
+    filter: drop-shadow(0 0 3px var(--sparkle-glow)) saturate(0.9);
+  }
+
+  50% {
+    filter: drop-shadow(0 0 8px var(--sparkle-glow)) saturate(1.45);
+  }
+}
+
+@keyframes sparkle-aura-pulse {
+  0%,
+  100% {
+    opacity: 0.22;
+    box-shadow:
+      0 0 9px transparent,
+      inset 0 0 10px transparent;
+  }
+
+  50% {
+    opacity: 0.9;
+    box-shadow:
+      0 0 18px var(--sparkle-glow),
+      inset 0 0 14px color-mix(in srgb, var(--sparkle-glow) 55%, transparent);
+  }
+}
+
+@keyframes edge-spark-orbit {
+  from {
+    offset-distance: var(--spark-start, 0%);
+  }
+
+  to {
+    offset-distance: calc(100% + var(--spark-start, 0%));
+  }
+}
+
+@keyframes edge-spark-twinkle {
+  0%,
+  100% {
+    opacity: 0.3;
+    transform: scale(0.65);
+  }
+
+  45% {
+    opacity: 1;
+    transform: scale(1.35);
+  }
+
+  70% {
+    opacity: 0.62;
+    transform: scale(0.9);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .reward-starfield {
     opacity: 0.58;
   }
 
   .sparkle-frame::after {
-    animation: none;
+    animation: sparkle-border-pulse 6.5s ease-in-out infinite var(--sparkle-delay, 0s);
     opacity: 0.58;
+  }
+
+  .sparkle-frame::before {
+    animation: sparkle-aura-pulse 8s ease-in-out infinite var(--sparkle-delay, 0s);
+  }
+
+  .sparkle-frame > .edge-spark {
+    display: none;
   }
 }
 

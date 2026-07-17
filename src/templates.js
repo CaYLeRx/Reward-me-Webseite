@@ -39,7 +39,8 @@ export const templates = {"home":{"de":"<div class=\"relative z-10\"><header cla
 export const pageMeta = {
   "home": {
     "de": {
-      "title": "Reward Me — Belohnung, die sich lohnt.",
+      "title": "Reward Me. Belohnungen für bewusstes Verhalten.",
+      "description": "Reward Me ist eine Schweizer Reward Plattform. Erledige in unserer App Challenges & Quest, erhalte Punkte und löse Sie gegen tolle Vorteile von unseren Partner ein.",
       "lang": "de-CH",
       "theme": "light"
     },

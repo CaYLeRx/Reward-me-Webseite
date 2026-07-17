@@ -105,7 +105,7 @@ export function Starfield() {
 
       const dark = document.documentElement.dataset.theme === "dark";
       const palette = dark ? DARK_PALETTE : LIGHT_PALETTE;
-      const motion = reducedMotion.matches ? 0 : time * 0.000014;
+      const motion = reducedMotion.matches ? 0 : time * 0.000032;
       const scrollDepth = scrollY * 0.00031;
 
       context.globalCompositeOperation = dark ? "lighter" : "source-over";
@@ -126,8 +126,8 @@ export function Starfield() {
         const z = ((star.z - scrollDepth * star.speed + motion * star.speed) % 1 + 1) % 1;
         const depth = 0.27 + z * 1.23;
         const perspective = 1 / depth;
-        const driftX = Math.sin(star.drift + time * 0.00008) * 3 * (1 - z);
-        const driftY = Math.cos(star.drift + time * 0.00006) * 2 * (1 - z);
+        const driftX = Math.sin(star.drift + time * 0.00019) * 5 * (1 - z);
+        const driftY = Math.cos(star.drift + time * 0.00014) * 3.5 * (1 - z);
         const x =
           width * 0.5 +
           star.x * width * 0.58 * perspective +
