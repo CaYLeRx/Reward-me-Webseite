@@ -28,6 +28,27 @@
   min-height: 100vh;
 }
 
+.reward-starfield {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  opacity: 0.92;
+  transition: opacity 320ms ease;
+}
+
+html[data-theme="light"] .reward-starfield {
+  opacity: 0.72;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reward-starfield {
+    opacity: 0.58;
+  }
+}
+
 .form-field-error {
   border-color: #d4593f !important;
 }

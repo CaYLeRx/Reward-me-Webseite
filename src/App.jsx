@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { pageMeta, routes, templates } from "./templates.js";
+import { Starfield } from "./Starfield.jsx";
 
 const localeByTitle = {
   Deutsch: "de",
@@ -244,9 +245,12 @@ export function App() {
   }, [locale, routeKey]);
 
   return (
-    <div
-      ref={rootRef}
-      dangerouslySetInnerHTML={{ __html: templates[routeKey][locale] }}
-    />
+    <>
+      <Starfield />
+      <div
+        ref={rootRef}
+        dangerouslySetInnerHTML={{ __html: templates[routeKey][locale] }}
+      />
+    </>
   );
 }
