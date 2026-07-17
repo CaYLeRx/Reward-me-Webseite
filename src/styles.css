@@ -1,0 +1,48 @@
+@import "./source.css";
+
+@font-face {
+  font-family: "Inter";
+  src: url("/fonts/inter-latin.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Fraunces";
+  src: url("/fonts/fraunces-normal-latin.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Fraunces";
+  src: url("/fonts/fraunces-italic-latin.woff2") format("woff2");
+  font-style: italic;
+  font-weight: 100 900;
+  font-display: swap;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+.form-field-error {
+  border-color: #d4593f !important;
+}
+
+.form-feedback {
+  min-height: 1.5rem;
+  margin-top: 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.form-feedback[data-state="success"] {
+  color: var(--color-emerald-bright);
+}
+
+.form-feedback[data-state="error"] {
+  color: #f08a72;
+}
