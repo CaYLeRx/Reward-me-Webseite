@@ -1,5 +1,6 @@
 import { copyFile, mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
+import { sanitizeImportedMarkup } from "./html-import-safety.mjs";
 
 const projectRoot = path.resolve(import.meta.dirname, "..");
 const captureRoot = "D:/CodeX/work/reward-me-website-migration";
@@ -22,21 +23,6 @@ const routes = [
 
 const locales = ["de", "en", "fr", "it"];
 
-function sanitize(markup) {
-  return markup
-    .replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, "")
-    .replace(/<next-route-announcer\b[^>]*>[\s\S]*?<\/next-route-announcer>/gi, "")
-    .replace(/<nextjs-portal\b[^>]*>[\s\S]*?<\/nextjs-portal>/gi, "")
-    .replace(/^<div hidden=""><!--\$--><!--\/\$--><\/div>/, "")
-    .replace(/\s+srcset="[^"]*"/gi, "")
-    .replace(/\s+sizes="[^"]*"/gi, "")
-    .replace(/\s+data-nimg="[^"]*"/gi, "")
-    .replace(
-      /src="\/_next\/image\?url=%2Flogo-mark\.png(?:&amp;|&)w=\d+(?:&amp;|&)q=\d+"/gi,
-      'src="/logo-mark.png"',
-    );
-}
-
 await mkdir(path.join(projectRoot, "public", "fonts"), { recursive: true });
 await mkdir(path.join(projectRoot, "src"), { recursive: true });
 
@@ -56,8 +42,9 @@ for (const route of routes) {
       captureRoot,
       `rendered-${route.key}-${locale}.json`,
     );
-    templates[route.key][locale] = sanitize(
+    templates[route.key][locale] = sanitizeImportedMarkup(
       await readFile(htmlPath, "utf8"),
+      `${route.key}/${locale}`,
     );
     pageMeta[route.key][locale] = JSON.parse(
       await readFile(metaPath, "utf8"),
