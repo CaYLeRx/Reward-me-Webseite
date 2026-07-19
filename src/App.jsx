@@ -89,7 +89,7 @@ export function App() {
     const labels = ui[locale];
     const meta = pageMeta[routeKey][locale];
     document.documentElement.lang = locale;
-    document.title = meta.title || "Reward Me — Belohnung, die sich lohnt.";
+    document.title = meta.title || "Reward Me. Belohnungen für bewusstes Verhalten.";
     document.body.className = "bg-night text-haze";
     window.localStorage.setItem("reward-me-locale", locale);
 

@@ -39,7 +39,7 @@ export const templates = {"home":{"de":"<div aria-hidden=\"true\" class=\"pointe
 export const pageMeta = {
   "home": {
     "de": {
-      "title": "Reward Me — Belohnung, die sich lohnt.",
+      "title": "Reward Me. Belohnungen für bewusstes Verhalten.",
       "lang": "de-CH",
       "theme": "light"
     },
